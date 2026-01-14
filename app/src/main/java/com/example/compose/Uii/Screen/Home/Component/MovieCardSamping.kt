@@ -1,0 +1,43 @@
+package com.example.compose.Uii.Screen.Home.Component
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import com.example.compose.ApiOffline.RoomApi
+import com.example.compose.Uii.Screen.Home.Movie
+
+@Composable
+fun MovieCardSamping(
+    movie: RoomApi,
+    onClick: () -> Unit
+){
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        modifier = Modifier
+            .width(250.dp)
+            .height(150.dp)
+            .padding(start = 16.dp)
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(12.dp),
+    ){
+        AsyncImage(
+            model = movie.posterUrl,
+            contentDescription = movie.title,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+    }
+}
