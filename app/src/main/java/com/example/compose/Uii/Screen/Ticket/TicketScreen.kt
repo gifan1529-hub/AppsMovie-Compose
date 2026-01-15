@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,6 +40,9 @@ import com.example.compose.Uii.Screen.Home.Component.BottomBar
 import com.example.compose.Uii.Screen.Home.Component.MovieCard
 import com.example.compose.Uii.Screen.Ticket.Component.CardTicket
 import com.example.compose.ui.theme.Poppins
+import java.text.SimpleDateFormat
+import java.util.Date
+import kotlin.text.format
 
 @Composable
 fun TicketScreen(
@@ -90,14 +94,16 @@ fun TicketScreen(
             )
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(16.dp) // Beri jarak antar kartu
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 if (ticketList.isEmpty()) {
                     item {
                         Text(
                             text = "Belum ada riwayat pemesanan",
                             color = Color.Gray,
-                            modifier = Modifier.fillMaxWidth().padding(top = 50.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 50.dp),
                             textAlign = TextAlign.Center,
                             fontFamily = Poppins
                         )
@@ -115,3 +121,4 @@ fun TicketScreen(
         }
     }
 }
+

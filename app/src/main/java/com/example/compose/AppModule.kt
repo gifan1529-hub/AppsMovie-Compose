@@ -6,7 +6,7 @@ import com.example.compose.Api.ApiClient
 import com.example.compose.Api.ApiService
 import com.example.compose.ApiOffline.RoomDao
 import com.example.compose.Uii.Screen.BookingTicket.BookingHistoryDao
-import com.example.compose.Uii.Screen.Home.MovieDao
+import com.example.compose.Uii.Screen.Favorite.MovieDao
 import com.example.compose.UserDatabase.AppDatabase
 import com.example.compose.UserDatabase.UserDao
 import dagger.Module
@@ -67,4 +67,5 @@ object AppModule {
     fun provideBookingHistoryDao(appDatabase: AppDatabase): BookingHistoryDao {
         return appDatabase.bookingHistoryDao()
     }
+
 }

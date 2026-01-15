@@ -2,6 +2,7 @@ package com.example.compose.Uii.Screen.Home
 
 
 import com.example.compose.ApiOffline.RoomApi
+import com.example.compose.Uii.Screen.Favorite.FavoriteMovie
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository  {
@@ -19,9 +20,9 @@ interface MovieRepository  {
     suspend fun addFavorite(movie: RoomApi)
     suspend fun removeFavorite(movie: RoomApi)
 
-    suspend fun addMovieToFavorites(movie: Movie)
-    suspend fun removeMovieFromFavorites(movie: Movie)
-    fun getFavoriteMovies(email: String): Flow<List<Movie>>
+    suspend fun addMovieToFavorites(movie: FavoriteMovie)
+    suspend fun removeMovieFromFavorites(movie: FavoriteMovie)
+    fun getFavoriteMovies(email: String): Flow<List<FavoriteMovie>>
     suspend fun isMovieFavorites(movieId: String, email: String): Boolean
 
 }

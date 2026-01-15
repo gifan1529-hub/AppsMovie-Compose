@@ -51,6 +51,7 @@ fun DetailFilmScreen(
         viewModel.getMovieById(movieId)
     }
 
+    val isFavorite by viewModel.isFavorite.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
 
     Box(
@@ -96,17 +97,26 @@ fun DetailFilmScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         IconButton(
-                            onClick = { navController.navigate("home") },
+                            onClick = { navController.popBackStack() },
                             modifier = Modifier.background(Color.Black.copy(0.4f), CircleShape)
                         ) {
                             Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.White)
                         }
-                        Icon(
-                            painter = painterResource(id = R.drawable.bintang),
-                            contentDescription = null,
-                            tint = Color.Yellow,
-                            modifier = Modifier.size(32.dp)
-                        )
+                        IconButton(
+                            onClick = {
+                                movie?.let { viewModel.toggleFavoriteStatus(it) }
+                            },
+                            modifier = Modifier
+                                .background(Color.Black.copy(0.4f), CircleShape)
+                        ) {
+                            Icon(
+                                painter = if (isFavorite) painterResource(id = R.drawable.star)  else painterResource(id = R.drawable.bintang),
+                                contentDescription = null,
+                                tint = Color(0xFFFFCC00),
+                                modifier = Modifier.size(32.dp)
+                            )
+                        }
+
                     }
 
                     AsyncImage(
@@ -146,7 +156,7 @@ fun DetailFilmScreen(
                                 Icon(
                                     Icons.Default.Star,
                                     contentDescription = null,
-                                    tint = if (index < filledStars) Color.Yellow else Color.Gray,
+                                    tint = if (index < filledStars) Color(0xFFFFCC00) else Color.Gray,
                                     modifier = Modifier.size(18.dp)
                                 )
                             }
