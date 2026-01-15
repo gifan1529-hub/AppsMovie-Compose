@@ -33,6 +33,10 @@ class SharedPreferences(context: Context) {
         return prefs.getBoolean(IS_LOGGED_IN, false)
     }
 
+    fun saveUserEmail(email: String) {
+        prefs.edit().putString(KEY_EMAIL, email).apply()
+    }
+
     fun saveLoginStatus(isLoggedIn: Boolean) {
         prefs.edit().putBoolean(IS_LOGGED_IN, isLoggedIn).apply()
     }

@@ -3,6 +3,8 @@ package com.example.compose.Uii.Screen.User
 import android.R.attr.icon
 import android.R.attr.text
 import android.R.id.icon
+import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +18,7 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.runtime.setValue
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,8 +38,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.R
+import com.example.compose.SharedPreferences
 import com.example.compose.ui.theme.ComposeTheme
 import com.example.compose.ui.theme.Poppins
 
@@ -47,18 +54,19 @@ fun UserScreen(
 ) {
 
     val userDetails by viewModel.userDetails.observeAsState()
+
     val navBackStackEntry = navController.currentBackStackEntry
-    val shouldRefresh = navBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("refresh_trigger")?.observeAsState()
+    val refreshTrigger by navBackStackEntry?.savedStateHandle
+        ?.getLiveData<Boolean>("refresh_trigger")
+        ?.observeAsState(false) ?: remember { mutableStateOf(false) }
 
-    LaunchedEffect(shouldRefresh?.value) {
-        if (shouldRefresh?.value == true) {
-            viewModel.loadUserDetail()
-            navBackStackEntry.savedStateHandle.set("refresh_trigger", false)
-        }
-    }
-
-    LaunchedEffect(Unit) {
+    LaunchedEffect(refreshTrigger) {
         viewModel.loadUserDetail()
+        Log.d("DEBUGss", "Refresh trigger ")
+        if (refreshTrigger == true) {
+            viewModel.loadUserDetail()
+            navBackStackEntry?.savedStateHandle?.remove<Boolean>("refresh_trigger")
+        }
     }
     Box(
         modifier = Modifier

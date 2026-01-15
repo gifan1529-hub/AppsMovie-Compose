@@ -1,10 +1,12 @@
 package com.example.compose.Uii.Screen.User
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.compose.SharedPreferences
+import com.example.compose.UserDatabase.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -24,11 +26,11 @@ class UserVM @Inject constructor(
 
     fun loadUserDetail(){
         viewModelScope.launch {
-            val email = sharedPreferences.getUserEmail()
-            if (email != null) {
-                val details = getUser(email)
-                _userDetails.postValue(details)
-            }
+            delay(100)
+            val email = sharedPreferences.getUserEmail() ?: ""
+            Log.d("DEBUGss", "Loading data for email: $email")
+            val details = getUser(email)
+            _userDetails.postValue(details)
         }
     }
     fun logout() {
