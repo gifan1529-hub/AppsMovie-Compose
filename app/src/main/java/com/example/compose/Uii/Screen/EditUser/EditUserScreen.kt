@@ -62,6 +62,10 @@ fun EditUserScreen(
 
     LaunchedEffect(uiState.updateSuccess) {
         if (uiState.updateSuccess) {
+            navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.set("refresh_trigger", true)
+
             navController.popBackStack()
         }
     }

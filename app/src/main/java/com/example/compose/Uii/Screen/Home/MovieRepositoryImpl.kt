@@ -9,15 +9,17 @@ import androidx.annotation.RequiresPermission
 import com.example.compose.Api.ApiService
 import com.example.compose.ApiOffline.RoomApi
 import com.example.compose.ApiOffline.RoomDao
+import com.example.compose.Uii.Screen.Favorite.FavoriteMovie
+import com.example.compose.Uii.Screen.Favorite.MovieDao
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
  class MovieRepositoryImpl @Inject constructor(
-    private val apiService: ApiService,
-    private val movieDao: RoomDao,
-    private val dao: MovieDao,
-    @ApplicationContext private val context: Context
+     private val apiService: ApiService,
+     private val movieDao: RoomDao,
+     private val dao: MovieDao,
+     @ApplicationContext private val context: Context
 ) : MovieRepository {
 
     override suspend fun searchMovies(query: String): List<RoomApi> {
@@ -84,20 +86,20 @@ import javax.inject.Inject
         movieDao.insertAll(listOf(unfavoritedMovie))
     }
 
-    override suspend fun addMovieToFavorites(movie: Movie) {
-        dao.addToFavorite(movie)
+    override suspend fun addMovieToFavorites(movie: FavoriteMovie) {
+        dao.insertMovie(movie)
     }
 
-    override suspend fun removeMovieFromFavorites(movie: Movie) {
+    override suspend fun removeMovieFromFavorites(movie: FavoriteMovie) {
         return dao.removeFromFavorite(movie.id)
     }
 
-    override fun getFavoriteMovies(email: String): Flow<List<Movie>> {
+    override fun getFavoriteMovies(email: String): Flow<List<FavoriteMovie>> {
         return dao.getAllFavoriteMovies(email)
     }
 
     override suspend fun isMovieFavorites(movieId: String, email: String): Boolean {
-        return dao.isFavorite(movieId)
+        return dao.isMovieFavorite(movieId)
     }
 
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)

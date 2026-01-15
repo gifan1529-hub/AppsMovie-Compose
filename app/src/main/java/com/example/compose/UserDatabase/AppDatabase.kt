@@ -7,11 +7,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.compose.ApiOffline.RoomDao
 import com.example.compose.ApiOffline.RoomApi
+import com.example.compose.Uii.Screen.Favorite.FavoriteMovie
 import com.example.compose.Converter
 import com.example.compose.Uii.Screen.BookingTicket.BookingHistory
 import com.example.compose.Uii.Screen.BookingTicket.BookingHistoryDao
-import com.example.compose.Uii.Screen.Home.Movie
-import com.example.compose.Uii.Screen.Home.MovieDao
+import com.example.compose.Uii.Screen.Favorite.MovieDao
 import com.example.compose.UserDatabase.User
 import com.example.compose.UserDatabase.UserDao
 
@@ -19,9 +19,9 @@ import com.example.compose.UserDatabase.UserDao
 @Database(entities = [
     User::class,
     RoomApi::class,
-    Movie::class,
+    FavoriteMovie::class,
     BookingHistory::class
-], version = 4,
+], version = 5,
     exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao() : UserDao

@@ -1,11 +1,14 @@
 package com.example.compose.Uii.Screen.EditUser
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.compose.SharedPreferences
 import com.example.compose.UserDatabase.User
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +23,8 @@ data class EditUserUiState(
 @HiltViewModel
 class EditUserVM @Inject constructor(
     private val getUserUC: GetUserUC,
-    private val updateUserUC: UpdateUserUC
+    private val updateUserUC: UpdateUserUC,
+    private val sharedPrefs: SharedPreferences
 ): ViewModel() {
     private val _uiState = MutableLiveData<EditUserUiState>()
     val uiState: LiveData<EditUserUiState> get() = _uiState
@@ -64,22 +68,36 @@ class EditUserVM @Inject constructor(
             val currentState = _uiState.value ?: return@launch
             val originalUser = currentUser ?: return@launch
 
+            val newEmail = currentState.email
             val passwordUntukDisimpan = currentState.passwordBaru.ifBlank {
                 originalUser.userPassword
             }
 
             val updatedUser = originalUser.copy(
-                email = currentState.email,
+                email = newEmail,
                 userPassword = passwordUntukDisimpan
             )
+
             _uiState.value = currentState.copy(isLoading = true)
 
-            updateUserUC(updatedUser)
+            try {
+                updateUserUC(updatedUser)
 
-            _uiState.value = currentState.copy(
-                updateSuccess = true,
-                isLoading = false
-            )
+                Log.d("DEBUGss", "Menyimpan ke SharedPrefs: $newEmail")
+                sharedPrefs.saveUserEmail(newEmail)
+
+                delay(50)
+
+                _uiState.value = currentState.copy(
+                    updateSuccess = true,
+                    isLoading = false
+                )
+            } catch (e: Exception) {
+                _uiState.value = currentState.copy(
+                    error = e.message,
+                    isLoading = false
+                )
+            }
         }
     }
 }
