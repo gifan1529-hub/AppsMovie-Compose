@@ -19,5 +19,5 @@ data class BookingHistory(
     val paymentStatus: String,
     val totalPrice: Long,
     val moviePosterUrl: String?,
-    val bookingDate: String
+    val bookingDate: Long
 )

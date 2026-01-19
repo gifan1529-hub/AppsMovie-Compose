@@ -55,16 +55,17 @@ fun UserScreen(
 
     val userDetails by viewModel.userDetails.observeAsState()
 
-    val navBackStackEntry = navController.currentBackStackEntry
-    val refreshTrigger by navBackStackEntry?.savedStateHandle
-        ?.getLiveData<Boolean>("refresh_trigger")
-        ?.observeAsState(false) ?: remember { mutableStateOf(false) }
+    val navBackStackEntry = navController.currentBackStackEntry // ngambil informasi tentang screen yang sedang aktif (UserScreen
+    val refreshTrigger by navBackStackEntry?.savedStateHandle // nympen dari edit user screen ke user screen
+        ?.getLiveData<Boolean>("refresh_trigger") // mantau data dgn nama "refresh_triger"
+        ?.observeAsState(false) ?: remember { mutableStateOf(false) } // nilai default nya false
 
     LaunchedEffect(refreshTrigger) {
         viewModel.loadUserDetail()
         Log.d("DEBUGss", "Refresh trigger ")
         if (refreshTrigger == true) {
             viewModel.loadUserDetail()
+            // nge hapus surat setelah isinya true
             navBackStackEntry?.savedStateHandle?.remove<Boolean>("refresh_trigger")
         }
     }
@@ -189,14 +190,26 @@ fun UserScreen(
                 profileMenuItem(
                     iconRes = R.drawable.ticket,
                     label = "My Tickets",
-                    onClick = {navController.navigate("seatselection") }
+                    onClick = {navController.navigate("home?page=2"){
+                        popUpTo("home"){
+                            inclusive = false
+                        }
+                        launchSingleTop = true
+                    }
+                    }
                 )
                 Spacer(modifier = Modifier.height(20.dp))
 
                 profileMenuItem(
                     iconRes = R.drawable.loves,
                     label = "My Favorites",
-                    onClick = {navController.navigate("favorite") }
+                    onClick = {navController.navigate("home?page=0"){
+                        popUpTo("home"){
+                            inclusive = false
+                        }
+                        launchSingleTop = true
+                    }
+                    }
                 )
                 Spacer(modifier = Modifier.weight(1f))
 
