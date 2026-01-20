@@ -91,7 +91,7 @@ import javax.inject.Inject
     }
 
     override suspend fun removeMovieFromFavorites(movie: FavoriteMovie) {
-        return dao.removeFromFavorite(movie.id)
+        return dao.removeFromFavorite(movie.id, email = movie.email)
     }
 
     override fun getFavoriteMovies(email: String): Flow<List<FavoriteMovie>> {
@@ -99,7 +99,7 @@ import javax.inject.Inject
     }
 
     override suspend fun isMovieFavorites(movieId: String, email: String): Boolean {
-        return dao.isMovieFavorite(movieId)
+        return dao.isMovieFavorite(movieId, email)
     }
 
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)

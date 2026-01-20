@@ -15,7 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.compose.ApiOffline.RoomApi
-import com.example.compose.Uii.Screen.Home.Movie
+
 
 @Composable
 fun MovieCardSamping(

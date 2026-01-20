@@ -20,16 +20,15 @@ interface MovieDao {
     fun getAllFavoriteMovies(email: String): Flow<List<FavoriteMovie>>
 
     // nge delete movie dari database
-    @Query("DELETE FROM favorite_movies_table WHERE id = :movieId")
-    suspend fun removeFromFavorite(movieId: String)
+    @Query("DELETE FROM favorite_movies_table WHERE id = :movieId AND email = :email")
+    suspend fun removeFromFavorite(movieId: String, email: String)
 
     @Query("SELECT * FROM movies WHERE isFavorite = 1")
     fun getFavoriteMovies(): LiveData<List<RoomApi>>
 
     // cek apakah movie ada di database
-    @Query("SELECT EXISTS (SELECT 1 FROM favorite_movies_table WHERE id = :movieId)")
-    suspend fun isMovieFavorite(movieId: String): Boolean
-
+    @Query("SELECT EXISTS (SELECT 1 FROM favorite_movies_table WHERE id = :movieId AND email = :email)")
+    suspend fun isMovieFavorite(movieId: String, email: String): Boolean
     @Query("UPDATE movies SET isFavorite = :isFav WHERE id = :movieId")
     suspend fun updateFavoriteStatus(movieId: String, isFav: Boolean)
 

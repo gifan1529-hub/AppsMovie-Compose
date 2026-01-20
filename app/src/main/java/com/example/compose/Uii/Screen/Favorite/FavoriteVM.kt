@@ -23,7 +23,7 @@ class FavoriteVM @Inject constructor(
     val favoriteMovies: StateFlow<List<FavoriteMovie>> = favoriteDao.getAllFavoriteMovies(userEmail)
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.WhileSubscribed(5000), // itu biar si flow favorite nya ga aktif terus, jadi itu bakal aktif kalo si user cuman berada di favorite screen. kalo ga berada di favorite screen bakal ngitung selama 5 detik dan kalo selama 5 detik itu si user ga balik lagi ke favorite, flow nya bakal ketutup
             initialValue = emptyList()
         )
 

@@ -224,8 +224,7 @@ class BookingTicketVM @Inject constructor (
 
         viewModelScope.launch {
             try {
-                val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-                val currentDate = sdf.format(Date())
+                val currentTimestamp = System.currentTimeMillis()
 
                 val history = BookingHistory(
                     movieTitle = data.movieTitle ?: "Unknown Movie",
@@ -241,7 +240,7 @@ class BookingTicketVM @Inject constructor (
                     adultTickets = data.adultTickets,
                     childTickets = data.childTickets,
                     moviePosterUrl = data.moviePosterUrl ?: "",
-                    bookingDate = currentDate
+                    bookingDate = currentTimestamp
                 )
 
                 val newId = BookingDao.insertBooking(history)

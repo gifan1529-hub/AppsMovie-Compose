@@ -29,7 +29,8 @@ class DetailFilmVM @Inject constructor(
 
     fun getMovieById(movieId: String) {
         viewModelScope.launch {
-            val localStatus = favoriteDao.isMovieFavorite(movieId) ?: false
+            val currentEmail = sharedPrefs.getUserEmail() ?: ""
+            val localStatus = favoriteDao.isMovieFavorite(movieId, currentEmail) ?: false
             _isFavorite.value = localStatus
 
             getMovieDetailUC.execute(movieId).collect { result ->
@@ -43,7 +44,8 @@ class DetailFilmVM @Inject constructor(
 
     fun checkFavoriteStatus(movieId: String) {
         viewModelScope.launch {
-            _isFavorite.value = favoriteDao.isMovieFavorite(movieId) ?: false
+            val currentEmail = sharedPrefs.getUserEmail() ?: ""
+            _isFavorite.value = favoriteDao.isMovieFavorite(movieId, currentEmail) ?: false
         }
     }
 
@@ -51,8 +53,6 @@ class DetailFilmVM @Inject constructor(
         viewModelScope.launch {
             val newStatus = !_isFavorite.value
             val userEmail = sharedPrefs.getUserEmail() ?: "guest@mail.com"
-
-            movie.isFavorite = newStatus
 
             if (newStatus) {
                 val favoriteMovie = FavoriteMovie(
@@ -64,9 +64,8 @@ class DetailFilmVM @Inject constructor(
                     rating = movie.rating
                 )
                 favoriteDao.insertMovie(favoriteMovie)
-                favoriteDao.updateFavoriteStatus(movie.id, true)
             } else {
-                favoriteDao.updateFavoriteStatus(movie.id, false)
+                favoriteDao.removeFromFavorite(movie.id, userEmail)
             }
 
             _isFavorite.value = newStatus

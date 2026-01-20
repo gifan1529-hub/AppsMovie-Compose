@@ -80,8 +80,8 @@ fun CardTicket(
                 }
             }
         }
-
 }
+
 
 @Preview(showBackground = true)
 @Composable

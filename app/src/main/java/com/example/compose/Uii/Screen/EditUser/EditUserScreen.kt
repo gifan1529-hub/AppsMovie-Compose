@@ -64,7 +64,7 @@ fun EditUserScreen(
         if (uiState.updateSuccess) {
             navController.previousBackStackEntry
                 ?.savedStateHandle
-                ?.set("refresh_trigger", true)
+                ?.set("refresh_trigger", true) // ngirim surat yang isinya true
 
             navController.popBackStack()
         }

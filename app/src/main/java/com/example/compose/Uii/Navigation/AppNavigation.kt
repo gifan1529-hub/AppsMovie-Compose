@@ -117,6 +117,13 @@ fun AppNavigation(
             ) {
                 MainPagerScreen(navController = navController)
             }
+            composable(
+                route = "home?page={page}",
+                arguments = listOf(navArgument("page") { defaultValue = 1 })
+            ) { backStackEntry ->
+                val page = backStackEntry.arguments?.getInt("page") ?: 1
+                MainPagerScreen(navController = navController, startPage = page)
+            }
 //            composable(
 //                route = "home",
 ////                enterTransition = {
@@ -242,12 +249,16 @@ fun AppNavigation(
     }
 
 @Composable
-fun MainPagerScreen (navController: NavController) {
+fun MainPagerScreen (navController: NavController, startPage: Int = 1) {
     val screens = listOf("favorite", "home", "ticket")
     val pagerState = rememberPagerState(
         initialPage = 1,
         pageCount = { screens.size })
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(startPage) {
+        pagerState.scrollToPage(startPage)
+    }
 
     Scaffold(
         containerColor = androidx.compose.ui.graphics.Color.Transparent,
